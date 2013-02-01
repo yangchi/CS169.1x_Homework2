@@ -10,6 +10,10 @@ class MoviesController < ApplicationController
     #debugger
     @all_ratings = Movie.all_ratings
     if params.include? :commit
+      if !params.include?(:ratings)
+        params[:ratings] = Hash.new()
+        @all_ratings.each { |rating| params[:ratings][rating] = 1 }
+      end
       ratings = params[:ratings].keys
       session[:ratings] = params[:ratings]
     elsif session.include? :ratings
