@@ -21,14 +21,23 @@ class MoviesController < ApplicationController
     else
       ratings = @all_ratings
     end
+    if !params.include?(:sort) && session.include?(:sort)
+        params[:sort] = session[:sort]
+    end
     if !params.include? :sort
       @movies = Movie.find(:all, :conditions => ["rating IN (?)", ratings])
     elsif params[:sort] == "title"
       @movies = Movie.find(:all, :order => "title", :conditions => ["rating IN (?)", ratings])
+      session[:sort] = params[:sort]
     elsif params[:sort] == "date"
       @movies = Movie.find(:all, :order => "release_date", :conditions => ["rating IN (?)", ratings])
+      session[:sort] = params[:sort]
     else
       @movies = Movie.all
+      session[:sort] = params[:sort]
+    end
+    if !params.include?(:ratings) || !params.include?(:sort)
+      redirect_to :action => 'index', :sort => if session.include? :sort then session[:sort] end, :ratings => if session.include? :ratings then session[:ratings] end
     end
   end
 
