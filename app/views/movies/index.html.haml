@@ -6,7 +6,7 @@
     %tr
       %th{:class => if params[:sort] == "title" then "hilite" end}= link_to "Movie Title", {:controller => "movies", :action => "index", :sort => "title"}, :id => "title_header"
       %th Rating
-      %th{:class => if params[:sort] == "date" then "hilite" end}= link_to "Release Date", {:controller => "movies", :action => "index", :sort => "date"}, :id => "release_date_reader"
+      %th{:class => if params[:sort] == "date" then "hilite" end}= link_to "Release Date", {:controller => "movies", :action => "index", :sort => "date"}, :id => "release_date_header"
       %th More Info
   %tbody
     - @movies.each do |movie|
