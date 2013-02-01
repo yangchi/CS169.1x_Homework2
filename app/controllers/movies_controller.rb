@@ -36,7 +36,7 @@ class MoviesController < ApplicationController
       @movies = Movie.all
       session[:sort] = params[:sort]
     end
-    if !params.include?(:ratings) || !params.include?(:sort)
+    if !params.include?(:ratings) && session.include?(:ratings) || !params.include?(:sort) && session.include?(:sort)
       redirect_to :action => 'index', :sort => if session.include? :sort then session[:sort] end, :ratings => if session.include? :ratings then session[:ratings] end
     end
   end
