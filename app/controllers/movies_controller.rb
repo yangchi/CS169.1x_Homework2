@@ -7,12 +7,22 @@ class MoviesController < ApplicationController
   end
 
   def index
+    #debugger
+    @all_ratings = Movie.all_ratings
+    if params.include? :commit
+      ratings = params[:ratings].keys
+      session[:ratings] = params[:ratings]
+    elsif session.include? :ratings
+      ratings = session[:ratings].keys
+    else
+      ratings = @all_ratings
+    end
     if !params.include? :sort
-      @movies = Movie.all
+      @movies = Movie.find(:all, :conditions => ["rating IN (?)", ratings])
     elsif params[:sort] == "title"
-      @movies = Movie.find(:all, :order => "title")
+      @movies = Movie.find(:all, :order => "title", :conditions => ["rating IN (?)", ratings])
     elsif params[:sort] == "date"
-      @movies = Movie.find(:all, :order => "release_date")
+      @movies = Movie.find(:all, :order => "release_date", :conditions => ["rating IN (?)", ratings])
     else
       @movies = Movie.all
     end
